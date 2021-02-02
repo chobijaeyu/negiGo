@@ -38,7 +38,7 @@ func Setup() *gin.Engine {
 	}))
 
 	var fieldview views.NegiField
-	fieldRouterGroup := r.Group("/v1/field")
+	fieldRouterGroup := r.Group("/v1/negifield/")
 	{
 		fieldRouterGroup.GET(":negifieldid", fieldview.GetNegiField)
 		fieldRouterGroup.POST("", fieldview.CreateNegiField)
@@ -47,7 +47,7 @@ func Setup() *gin.Engine {
 	}
 
 	var taskcaleventview views.TaskCalEvent
-	taskRouterGroup := r.Group("/v1/task")
+	taskRouterGroup := r.Group("/v1/negicalevent/")
 	{
 		taskRouterGroup.GET("")
 		taskRouterGroup.POST("", taskcaleventview.CreateTaskCalEvent)

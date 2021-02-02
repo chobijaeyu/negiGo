@@ -1,17 +1,16 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
+import "gorm.io/gorm"
 
 type NegiField struct {
 	gorm.Model
 	FieldName string `json:"field_name,omitempty"`
 	GroupName string `json:"group_name,omitempty"`
+	Status    bool   `json:"status,omitempty"`
 }
 
 func init() {
-
+	db.AutoMigrate(NegiField{})
 }
 
 func (F *NegiField) CreateNegiField() (err error) {

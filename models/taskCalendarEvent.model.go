@@ -1,14 +1,11 @@
 package models
 
 import (
-	"time"
-
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type TaskCalEvent struct {
 	gorm.Model
-	// ID        string `json:"id" firestore:"id"`
 	Start     string `json:"start" firestore:"start"`
 	End       string `json:"end" firestore:"end"`
 	Title     string `json:"title" firestore:"title"`
@@ -18,12 +15,16 @@ type TaskCalEvent struct {
 	Operator  string `json:"operator,omitempty"`
 	AllDay    bool   `json:"allDay,omitempty" firestore:"allDay,omitempty"`
 	CSSClass  string `json:"cssClass,omitempty" firestore:"cssClass,omitempty"`
-	Resizable struct {
-		BeforeStart bool `json:"beforeStart,omitempty" firestore:"beforeStart,omitempty"`
-		AfterEnd    bool `json:"afterEnd,omitempty firestore:"afterEnd,omitempty`
-	} `json:"resizable,omitempty" firestore:"resizable,omitempty"`
-	Draggable bool      `json:"draggable,omitempty" firestore:"draggable,omitempty"`
-	StartTime time.Time `json:"-" firestore:"startTime,omitempty"`
+	// Resizable struct {
+	// 	gorm.Model
+	// 	BeforeStart bool `json:"beforeStart,omitempty" firestore:"beforeStart,omitempty"`
+	// 	AfterEnd    bool `json:"afterEnd,omitempty firestore:"afterEnd,omitempty`
+	// } `json:"resizable,omitempty" firestore:"resizable,omitempty"`
+	Draggable bool `json:"draggable,omitempty" firestore:"draggable,omitempty"`
+}
+
+func init() {
+	db.AutoMigrate(TaskCalEvent{})
 }
 
 func (TC *TaskCalEvent) CreateTaskCalEvent() (err error) {
@@ -31,7 +32,6 @@ func (TC *TaskCalEvent) CreateTaskCalEvent() (err error) {
 	if err = db.Create(&TC).Error; err != nil {
 		return
 	}
-
 	return
 }
 
@@ -52,3 +52,8 @@ func (TC *TaskCalEvent) DeleteTaskCalEvent() (err error) {
 
 	return
 }
+
+// func (TC *TaskCalEvent) GetTaskCalEvent() (err error) {
+
+// 	if err = db.Model(&TC).Get()
+// }

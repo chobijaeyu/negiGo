@@ -21,6 +21,8 @@ func (tcv TaskCalEvent) CreateTaskCalEvent(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Create taskCalEvent create err:", err)
 		return
 	}
+
+	c.JSON(http.StatusOK, Taskcal)
 }
 
 func (tcv TaskCalEvent) UpdateTaskCalEvent(c *gin.Context) {
@@ -35,6 +37,8 @@ func (tcv TaskCalEvent) UpdateTaskCalEvent(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Create taskCalEvent update err:", err)
 		return
 	}
+
+	c.JSON(http.StatusOK, Taskcal)
 }
 
 func (tcv TaskCalEvent) DeteleTaskCalEvent(c *gin.Context) {

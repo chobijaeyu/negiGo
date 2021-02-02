@@ -69,4 +69,6 @@ func (tcv NegiField) GetNegiField(c *gin.Context) {
 	if err := negiField.GetOneNegiField(); err != nil {
 		return
 	}
+
+	c.JSON(http.StatusOK, negiField)
 }
