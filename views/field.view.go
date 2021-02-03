@@ -72,3 +72,14 @@ func (tcv NegiField) GetNegiField(c *gin.Context) {
 
 	c.JSON(http.StatusOK, negiField)
 }
+
+func (tcv NegiField) GetAllNeigFields(c *gin.Context) {
+	nf := models.NegiField{}
+	fs, err := nf.GetAllNegiField()
+	if err != nil {
+		return
+	}
+	c.JSON(http.StatusOK, fs)
+}
+
+//todo return and log every err

@@ -38,6 +38,7 @@ func Setup() *gin.Engine {
 	}))
 
 	var fieldview views.NegiField
+	r.GET("v1/negifields/", fieldview.GetAllNeigFields)
 	fieldRouterGroup := r.Group("/v1/negifield/")
 	{
 		fieldRouterGroup.GET(":negifieldid", fieldview.GetNegiField)

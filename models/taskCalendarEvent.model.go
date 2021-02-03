@@ -20,7 +20,8 @@ type TaskCalEvent struct {
 	// 	BeforeStart bool `json:"beforeStart,omitempty" firestore:"beforeStart,omitempty"`
 	// 	AfterEnd    bool `json:"afterEnd,omitempty firestore:"afterEnd,omitempty`
 	// } `json:"resizable,omitempty" firestore:"resizable,omitempty"`
-	Draggable bool `json:"draggable,omitempty" firestore:"draggable,omitempty"`
+	Draggable bool      `json:"draggable,omitempty" firestore:"draggable,omitempty"`
+	NegiField NegiField `gorm:"foreignKey:id"`
 }
 
 func init() {
