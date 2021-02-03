@@ -20,8 +20,8 @@ type TaskCalEvent struct {
 	// 	BeforeStart bool `json:"beforeStart,omitempty" firestore:"beforeStart,omitempty"`
 	// 	AfterEnd    bool `json:"afterEnd,omitempty firestore:"afterEnd,omitempty`
 	// } `json:"resizable,omitempty" firestore:"resizable,omitempty"`
-	Draggable bool      `json:"draggable,omitempty" firestore:"draggable,omitempty"`
-	NegiField NegiField `gorm:"foreignKey:id"`
+	Draggable   bool `json:"draggable,omitempty" firestore:"draggable,omitempty"`
+	NegiFieldID uint
 }
 
 func init() {
@@ -58,3 +58,10 @@ func (TC *TaskCalEvent) DeleteTaskCalEvent() (err error) {
 
 // 	if err = db.Model(&TC).Get()
 // }
+
+func (TC *TaskCalEvent) GetAllTaskCalEvents() (cs []TaskCalEvent, err error) {
+	if err = db.Find(&cs).Error; err != nil {
+		return
+	}
+	return
+}

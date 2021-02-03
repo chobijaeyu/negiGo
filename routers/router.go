@@ -48,6 +48,7 @@ func Setup() *gin.Engine {
 	}
 
 	var taskcaleventview views.TaskCalEvent
+	r.GET("v1/negicalevents/", taskcaleventview.GetAllTaskCalEvent)
 	taskRouterGroup := r.Group("/v1/negicalevent/")
 	{
 		taskRouterGroup.GET("")

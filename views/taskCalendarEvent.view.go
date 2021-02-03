@@ -54,3 +54,13 @@ func (tcv TaskCalEvent) DeteleTaskCalEvent(c *gin.Context) {
 		return
 	}
 }
+
+func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
+	tc := models.TaskCalEvent{}
+	cs, err := tc.GetAllTaskCalEvents()
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, cs)
+}
