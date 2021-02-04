@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -61,6 +63,18 @@ func (TC *TaskCalEvent) DeleteTaskCalEvent() (err error) {
 
 func (TC *TaskCalEvent) GetAllTaskCalEvents() (cs []TaskCalEvent, err error) {
 	if err = db.Find(&cs).Error; err != nil {
+		return
+	}
+	return
+}
+
+func (TC *TaskCalEvent) GetTaskCalEventsByQuery(q, v string) (cvs []TaskCalEvent, err error) {
+	switch q {
+	case "nfID":
+		fmt.Println(v)
+		if err = db.Model(&TC).Where("negi_field_id = ?", v).Find(&cvs).Error; err != nil {
+			return
+		}
 		return
 	}
 	return

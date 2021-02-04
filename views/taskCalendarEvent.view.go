@@ -1,8 +1,10 @@
 package views
 
 import (
+	"fmt"
 	"negigo/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,10 +59,34 @@ func (tcv TaskCalEvent) DeteleTaskCalEvent(c *gin.Context) {
 
 func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
 	tc := models.TaskCalEvent{}
+	fmt.Println(c.Query("nfID"))
+	if negifieldID, isexit := c.GetQuery("nfID"); isexit {
+		cs, err := tc.GetTaskCalEventsByQuery("nfID", negifieldID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		c.JSON(http.StatusOK, cs)
+		return
+	}
+
+	/////////
 	cs, err := tc.GetAllTaskCalEvents()
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, cs)
+}
+
+func (tcv TaskCalEvent) GetTaskEventsByQuery(c *gin.Context) {
+	tc := models.TaskCalEvent{}
+	if c.ShouldBind(&tc) == nil {
+		cvs, err := tc.GetTaskCalEventsByQuery("nfID", strconv.Itoa(int(tc.NegiFieldID)))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
+		c.JSON(http.StatusOK, cvs)
+	}
 }

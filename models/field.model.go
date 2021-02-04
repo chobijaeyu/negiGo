@@ -6,7 +6,8 @@ type NegiField struct {
 	gorm.Model
 	FieldName    string `json:"field_name,omitempty"`
 	GroupName    string `json:"group_name,omitempty"`
-	Status       bool   `json:"status,omitempty"`
+	Active       bool   `json:"active,omitempty"`
+	Address      string `json:"address,omitempty"`
 	TaskCalEvent []TaskCalEvent
 }
 
@@ -41,7 +42,7 @@ func (F *NegiField) DeleteNegiField() (err error) {
 
 func (F *NegiField) GetOneNegiField() (err error) {
 
-	if err = db.First(F.ID).Error; err != nil {
+	if err = db.Model(&F).First(F.TaskCalEvent).Error; err != nil {
 		return
 	}
 	return
