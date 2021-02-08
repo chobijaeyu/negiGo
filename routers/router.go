@@ -43,8 +43,8 @@ func Setup() *gin.Engine {
 	{
 		fieldRouterGroup.GET(":negifieldid", fieldview.GetNegiField)
 		fieldRouterGroup.POST("", fieldview.CreateNegiField)
-		fieldRouterGroup.PATCH("", fieldview.UpdateNegiField)
-		fieldRouterGroup.DELETE("", fieldview.DeteleNegiField)
+		fieldRouterGroup.PUT(":negifieldid", fieldview.UpdateNegiField)
+		fieldRouterGroup.DELETE(":negifieldid", fieldview.DeteleNegiField)
 	}
 
 	var taskcaleventview views.TaskCalEvent
@@ -53,8 +53,8 @@ func Setup() *gin.Engine {
 	{
 		taskRouterGroup.GET("")
 		taskRouterGroup.POST("", taskcaleventview.CreateTaskCalEvent)
-		taskRouterGroup.PATCH("", taskcaleventview.UpdateTaskCalEvent)
-		taskRouterGroup.DELETE("", taskcaleventview.DeteleTaskCalEvent)
+		taskRouterGroup.PUT(":eventid", taskcaleventview.UpdateTaskCalEvent)
+		taskRouterGroup.DELETE(":eventid", taskcaleventview.DeteleTaskCalEvent)
 	}
 
 	return r

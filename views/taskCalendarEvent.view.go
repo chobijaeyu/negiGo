@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"negigo/models"
 	"net/http"
 	"strconv"
@@ -46,20 +45,18 @@ func (tcv TaskCalEvent) UpdateTaskCalEvent(c *gin.Context) {
 func (tcv TaskCalEvent) DeteleTaskCalEvent(c *gin.Context) {
 	Taskcal := models.TaskCalEvent{}
 
-	if err := c.Bind(&Taskcal); err != nil {
-		c.String(http.StatusBadRequest, "Create taskCalEvent bind err:", err)
-		return
-	}
+	_uid64, _ := strconv.ParseUint(c.Param("eventid"), 10, 32)
+	Taskcal.ID = uint(_uid64)
 
 	if err := Taskcal.DeleteTaskCalEvent(); err != nil {
 		c.String(http.StatusBadRequest, "Create taskCalEvent delete err:", err)
 		return
 	}
+	c.String(http.StatusNoContent, "")
 }
 
 func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
 	tc := models.TaskCalEvent{}
-	fmt.Println(c.Query("nfID"))
 	if negifieldID, isexit := c.GetQuery("nfID"); isexit {
 		cs, err := tc.GetTaskCalEventsByQuery("nfID", negifieldID)
 		if err != nil {

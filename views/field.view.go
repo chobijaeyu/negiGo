@@ -45,16 +45,18 @@ func (tcv NegiField) UpdateNegiField(c *gin.Context) {
 func (tcv NegiField) DeteleNegiField(c *gin.Context) {
 	negiField := models.NegiField{}
 
-	if err := c.Bind(&negiField); err != nil {
-		c.String(http.StatusBadRequest, "Delete NegiField bind err:", err)
+	negifieldid, err := strconv.ParseUint(c.Param("negifieldid"), 10, 32)
+	if err != nil {
 		return
 	}
+
+	negiField.ID = uint(negifieldid)
 
 	if err := negiField.DeleteNegiField(); err != nil {
 		c.String(http.StatusBadRequest, "Delete NegiField delete err:", err)
 		return
 	}
-
+	c.String(http.StatusNoContent, "")
 }
 
 func (tcv NegiField) GetNegiField(c *gin.Context) {
