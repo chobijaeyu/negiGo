@@ -60,12 +60,12 @@ func gormConnect() *gorm.DB {
 	var dbURI string
 	fmt.Println(gin.Mode())
 	if gin.Mode() == gin.ReleaseMode {
-		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
-		if !isSet {
-			socketDir = "/cloudsql"
-		}
+		// socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+		// if !isSet {
+		// 	socketDir = "/cloudsql"
+		// }
 		instanceConnectionName := os.Getenv("instanceConnectionName")
-		dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+		dbURI = fmt.Sprintf("%s:%s@cloudsql(/%s)/%s", dbUser, dbPwd, instanceConnectionName, dbName)
 
 	} else {
 		PROTOCOL := fmt.Sprintf("tcp(%s:%s)", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
