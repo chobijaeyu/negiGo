@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -52,16 +53,29 @@ func init() {
 
 func gormConnect() *gorm.DB {
 
-	USER := os.Getenv("DB_USERNAME")
-	PASS := os.Getenv("DB_PASSWORD")
-	PROTOCOL := fmt.Sprintf("tcp(%s:%s)", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
-	DBNAME := os.Getenv("DB_NAME_negi")
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
-	dsn := CONNECT + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dbUser := os.Getenv("DB_USERNAME")
+	dbPwd := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME_negi")
+
+	var dbURI string
+	fmt.Println(gin.Mode())
+	if gin.Mode() == gin.ReleaseMode {
+		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+		if !isSet {
+			socketDir = "/cloudsql"
+		}
+		instanceConnectionName := os.Getenv("instanceConnectionName")
+		dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+
+	} else {
+		PROTOCOL := fmt.Sprintf("tcp(%s:%s)", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
+		dbURI = dbUser + ":" + dbPwd + "@" + PROTOCOL + "/" + dbName
+	}
+
+	dsn := dbURI + "?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Println("db connected: ", &db)
 	return db
 }
