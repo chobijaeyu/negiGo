@@ -1,9 +1,10 @@
 package models
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
+
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -49,7 +50,6 @@ var db *gorm.DB
 
 func init() {
 	db = gormConnect()
-	db.AutoMigrate(NegiField{})
 }
 
 func gormConnect() *gorm.DB {
@@ -58,40 +58,25 @@ func gormConnect() *gorm.DB {
 	dbPwd := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME_negi")
 
-	var (
-		dbURI string
-		db    *gorm.DB
-		err   error
-	)
+	var dbURI string
 	fmt.Println(gin.Mode())
 	if gin.Mode() == gin.ReleaseMode {
-		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
-		if !isSet {
-			socketDir = "/cloudsql"
-		}
+		// socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+		// if !isSet {
+		// 	socketDir = "/cloudsql"
+		// }
 		instanceConnectionName := os.Getenv("instanceConnectionName")
-		dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
-
-		// dbPool is the pool of database connections.
-		dbPool, err := sql.Open("mysql", dbURI)
-		if err != nil {
-			fmt.Printf("sql.Open: %v", err)
-			return nil
-		}
-		db, err = gorm.Open(mysql.New(mysql.Config{
-			Conn: dbPool,
-		}), &gorm.Config{})
+		dbURI = fmt.Sprintf("%s:%s@cloudsql(%s)/%s", dbUser, dbPwd, instanceConnectionName, dbName)
 
 	} else {
 		PROTOCOL := fmt.Sprintf("tcp(%s:%s)", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
 		dbURI = dbUser + ":" + dbPwd + "@" + PROTOCOL + "/" + dbName
-		dsn := dbURI + "?charset=utf8mb4&parseTime=True&loc=Local"
-		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-		if err != nil {
-			panic(err.Error())
-		}
-
 	}
 
+	dsn := dbURI + "?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err.Error())
+	}
 	return db
 }
