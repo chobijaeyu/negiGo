@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"negigo/middleware"
 	"negigo/views"
 	"time"
 
@@ -36,6 +37,12 @@ func Setup() *gin.Engine {
 		// Allows usage of file:// schema (dangerous!) use it only when you 100% sure it's needed
 		AllowFiles: true,
 	}))
+
+	var authViews views.AuthViews
+	// r.GET("/v1/members", authViews.ListAllUsers)
+	// r.POST("/v1/members/:uid", authViews.UpdateUser)
+	r.GET("/v1/members", middleware.FirebaseAuth(), authViews.ListAllUsers)
+	r.POST("/v1/members/:uid", middleware.FirebaseAuth(), middleware.AdminAuth(), authViews.UpdateUser)
 
 	var fieldview views.NegiField
 	r.GET("v1/negifields/", fieldview.GetAllNeigFields)
