@@ -2,8 +2,11 @@ package models
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	firebase "firebase.google.com/go"
+	"firebase.google.com/go/auth"
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 
 	"github.com/gin-gonic/gin"
@@ -79,4 +82,17 @@ func gormConnect() *gorm.DB {
 		panic(err.Error())
 	}
 	return db
+}
+
+func GetFirebaseAuthClient(c *gin.Context) *auth.Client {
+	app, err := firebase.NewApp(c.Request.Context(), nil)
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+
+	authClient, err := app.Auth(c.Request.Context())
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+	return authClient
 }
