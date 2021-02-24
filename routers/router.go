@@ -38,6 +38,9 @@ func Setup() *gin.Engine {
 		AllowFiles: true,
 	}))
 
+	r.POST("v1/img/:name", views.AddGoodsImg)
+	r.DELETE("v1/img", views.DeleteGoodsImg)
+
 	var authViews views.AuthViews
 	// r.GET("/v1/members", authViews.ListAllUsers)
 	// r.POST("/v1/members/:uid", authViews.UpdateUser)
