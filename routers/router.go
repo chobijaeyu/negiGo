@@ -38,8 +38,8 @@ func Setup() *gin.Engine {
 		AllowFiles: true,
 	}))
 
-	r.POST("v1/img/:name", views.AddGoodsImg)
-	r.DELETE("v1/img", views.DeleteGoodsImg)
+	r.POST("v1/img/:name", middleware.FirebaseAuth(), views.AddGoodsImg)
+	r.DELETE("v1/img", middleware.FirebaseAuth(), views.DeleteGoodsImg)
 
 	var authViews views.AuthViews
 	// r.GET("/v1/members", authViews.ListAllUsers)
