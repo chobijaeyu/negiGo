@@ -2,14 +2,8 @@ package models
 
 import (
 	"context"
-	"os"
 
 	"firebase.google.com/go/auth"
-)
-
-var (
-	collectionName     string = os.Getenv("projectName")
-	collectionNameUser        = collectionName + "UserCollection"
 )
 
 //User user struct
