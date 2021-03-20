@@ -1,10 +1,12 @@
 package models
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 
+	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
@@ -95,4 +97,23 @@ func GetFirebaseAuthClient(c *gin.Context) *auth.Client {
 		log.Fatalf("error getting Auth client: %v\n", err)
 	}
 	return authClient
+}
+
+//Setup database ctx and client
+func Setup() (ctx context.Context, client *firestore.Client) {
+	// [START fs_initialize]
+	// Sets your Google Cloud Platform project ID.
+	projectID := os.Getenv("gcloud_projectID")
+
+	// Get a Firestore client.
+	ctx = context.Background()
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Printf("Failed to create client: %v", err)
+	}
+
+	// Close client when done.
+	// defer client.Close()
+	// [END fs_initialize]
+	return
 }

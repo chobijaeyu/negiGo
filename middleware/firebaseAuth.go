@@ -49,16 +49,8 @@ func FirebaseAuth() gin.HandlerFunc {
 		}
 
 		c.Set("token", decoded)
-
-		user, err := client.GetUser(c.Request.Context(), decoded.UID)
-		if err != nil {
-			statusCode := http.StatusUnauthorized
-			c.JSON(statusCode, http.StatusText(statusCode))
-			c.Abort()
-			return
-		}
-		c.Set("role", user.CustomClaims["role"])
-		c.Set("username", user.DisplayName)
+		c.Set("role", decoded.Claims["role"])
+		c.Set("username", decoded.Claims["name"])
 		c.Next()
 	}
 }
