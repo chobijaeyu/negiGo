@@ -57,8 +57,12 @@ func (tcv TaskCalEvent) DeteleTaskCalEvent(c *gin.Context) {
 
 func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
 	tc := models.TaskCalEvent{}
+	confirmed, isQconfirmed := c.GetQuery("confirmed")
+	if !isQconfirmed {
+		confirmed = "false"
+	}
 	if negifieldID, isexit := c.GetQuery("nfID"); isexit {
-		cs, err := tc.GetTaskCalEventsByQuery("nfID", negifieldID)
+		cs, err := tc.GetTaskCalEventsByQuery(confirmed, "nfID", negifieldID)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 			return
@@ -68,7 +72,7 @@ func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
 	}
 
 	/////////
-	cs, err := tc.GetAllTaskCalEvents()
+	cs, err := tc.GetAllTaskCalEvents(confirmed)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
@@ -76,14 +80,14 @@ func (tcv TaskCalEvent) GetAllTaskCalEvent(c *gin.Context) {
 	c.JSON(http.StatusOK, cs)
 }
 
-func (tcv TaskCalEvent) GetTaskEventsByQuery(c *gin.Context) {
-	tc := models.TaskCalEvent{}
-	if c.ShouldBind(&tc) == nil {
-		cvs, err := tc.GetTaskCalEventsByQuery("nfID", strconv.Itoa(int(tc.NegiFieldID)))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, err)
-			return
-		}
-		c.JSON(http.StatusOK, cvs)
-	}
-}
+// func (tcv TaskCalEvent) GetTaskEventsByQuery(c *gin.Context) {
+// 	tc := models.TaskCalEvent{}
+// 	if c.ShouldBind(&tc) == nil {
+// 		cvs, err := tc.GetTaskCalEventsByQuery("nfID", strconv.Itoa(int(tc.NegiFieldID)))
+// 		if err != nil {
+// 			c.JSON(http.StatusBadRequest, err)
+// 			return
+// 		}
+// 		c.JSON(http.StatusOK, cvs)
+// 	}
+// }

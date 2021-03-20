@@ -38,14 +38,18 @@ func Setup() *gin.Engine {
 		AllowFiles: true,
 	}))
 
-	r.POST("v1/img/:name", middleware.FirebaseAuth(), views.AddGoodsImg)
-	r.DELETE("v1/img", middleware.FirebaseAuth(), views.DeleteGoodsImg)
+	r.Use(middleware.FirebaseAuth())
+
+	r.Use(middleware.OperatingLog())
+
+	r.POST("v1/img/:name", views.AddGoodsImg)
+	r.DELETE("v1/img", views.DeleteGoodsImg)
 
 	var authViews views.AuthViews
 	// r.GET("/v1/members", authViews.ListAllUsers)
 	// r.POST("/v1/members/:uid", authViews.UpdateUser)
-	r.GET("/v1/members", middleware.FirebaseAuth(), authViews.ListAllUsers)
-	r.POST("/v1/members/:uid", middleware.FirebaseAuth(), middleware.AdminAuth(), authViews.UpdateUser)
+	r.GET("/v1/members", authViews.ListAllUsers)
+	r.POST("/v1/members/:uid", middleware.AdminAuth(), authViews.UpdateUser)
 
 	var fieldview views.NegiField
 	r.GET("v1/negifields/", fieldview.GetAllNeigFields)

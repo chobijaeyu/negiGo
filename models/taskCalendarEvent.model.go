@@ -1,6 +1,9 @@
 package models
 
 import (
+	"strconv"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -21,6 +24,7 @@ type TaskCalEvent struct {
 	// 	AfterEnd    bool `json:"afterEnd,omitempty firestore:"afterEnd,omitempty`
 	// } `json:"resizable,omitempty" firestore:"resizable,omitempty"`
 	Draggable   bool `json:"draggable,omitempty" firestore:"draggable,omitempty"`
+	Confirmed   bool `json:"confirmed" firestore:"confirmed"`
 	NegiFieldID uint
 }
 
@@ -59,17 +63,29 @@ func (TC *TaskCalEvent) DeleteTaskCalEvent() (err error) {
 // 	if err = db.Model(&TC).Get()
 // }
 
-func (TC *TaskCalEvent) GetAllTaskCalEvents() (cs []TaskCalEvent, err error) {
-	if err = db.Find(&cs).Error; err != nil {
+func (TC *TaskCalEvent) GetAllTaskCalEvents(confirmed string) (cs []TaskCalEvent, err error) {
+	_confirmed, err := strconv.ParseBool(confirmed)
+	if err != nil {
+		return
+	}
+	lastMonth := time.Now().AddDate(0, -2, 0)
+	nextyear := time.Now().AddDate(1, 0, 0)
+	if err = db.Model(&TC).Where("confirmed = ?", _confirmed).Where("created_at BETWEEN ? AND ?", lastMonth, nextyear).Find(&cs).Error; err != nil {
 		return
 	}
 	return
 }
 
-func (TC *TaskCalEvent) GetTaskCalEventsByQuery(q, v string) (cvs []TaskCalEvent, err error) {
+func (TC *TaskCalEvent) GetTaskCalEventsByQuery(confirmed, q, v string) (cvs []TaskCalEvent, err error) {
+	_confirmed, err := strconv.ParseBool(confirmed)
+	if err != nil {
+		return
+	}
+	lastMonth := time.Now().AddDate(0, -2, 0)
+	nextyear := time.Now().AddDate(1, 0, 0)
 	switch q {
 	case "nfID":
-		if err = db.Model(&TC).Where("negi_field_id = ?", v).Find(&cvs).Error; err != nil {
+		if err = db.Model(&TC).Where("created_at BETWEEN ? AND ?", lastMonth, nextyear).Where("negi_field_id = ? AND confirmed = ?", v, _confirmed).Find(&cvs).Error; err != nil {
 			return
 		}
 		return
