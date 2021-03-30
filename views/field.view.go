@@ -14,12 +14,12 @@ func (tcv NegiField) CreateNegiField(c *gin.Context) {
 	negiField := models.NegiField{}
 
 	if err := c.Bind(&negiField); err != nil {
-		c.String(http.StatusBadRequest, "Create NegiField bind err:", err)
+		c.String(http.StatusBadRequest, "Create NegiField bind err: %v", err)
 		return
 	}
 
 	if err := negiField.CreateNegiField(); err != nil {
-		c.String(http.StatusBadRequest, "Create NegiField create err:", err)
+		c.String(http.StatusBadRequest, "Create NegiField create err: %v", err)
 		return
 	}
 
@@ -30,12 +30,12 @@ func (tcv NegiField) UpdateNegiField(c *gin.Context) {
 	negiField := models.NegiField{}
 
 	if err := c.Bind(&negiField); err != nil {
-		c.String(http.StatusBadRequest, "Updates NegiField bind err:", err)
+		c.String(http.StatusBadRequest, "Updates NegiField bind err: %v", err)
 		return
 	}
 
 	if err := negiField.UpdatesNegiField(); err != nil {
-		c.String(http.StatusBadRequest, "Updates NegiField update err:", err)
+		c.String(http.StatusBadRequest, "Updates NegiField update err: %v", err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (tcv NegiField) DeteleNegiField(c *gin.Context) {
 	negiField.ID = uint(negifieldid)
 
 	if err := negiField.DeleteNegiField(); err != nil {
-		c.String(http.StatusBadRequest, "Delete NegiField delete err:", err)
+		c.String(http.StatusBadRequest, "Delete NegiField delete err: %v", err)
 		return
 	}
 	c.String(http.StatusNoContent, "")

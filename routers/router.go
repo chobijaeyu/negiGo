@@ -71,5 +71,14 @@ func Setup() *gin.Engine {
 		taskRouterGroup.DELETE(":eventid", taskcaleventview.DeteleTaskCalEvent)
 	}
 
+	var tasktitleoptionview views.NegiTaskTitleOption
+	r.GET("v1/negiCustomTaskTitleOptions", tasktitleoptionview.GetAllTaskTitleOption)
+	tasktitleoptionRouterGroup := r.Group("/v1/negiCustomTaskTitleOption")
+	{
+		tasktitleoptionRouterGroup.GET("")
+		taskRouterGroup.POST("", taskcaleventview.CreateTaskCalEvent)
+		taskRouterGroup.PUT(":id", taskcaleventview.UpdateTaskCalEvent)
+		taskRouterGroup.DELETE(":id", taskcaleventview.DeteleTaskCalEvent)
+	}
 	return r
 }
