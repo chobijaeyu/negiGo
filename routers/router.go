@@ -72,13 +72,13 @@ func Setup() *gin.Engine {
 	}
 
 	var tasktitleoptionview views.NegiTaskTitleOption
-	r.GET("v1/negiCustomTaskTitleOptions", tasktitleoptionview.GetAllTaskTitleOption)
-	tasktitleoptionRouterGroup := r.Group("/v1/negiCustomTaskTitleOption")
+	r.GET("v1/negicustomtasktitleoptions/", tasktitleoptionview.GetAllTaskTitleOption)
+	tasktitleoptionRouterGroup := r.Group("/v1/negicustomtasktitleoption/")
 	{
 		tasktitleoptionRouterGroup.GET("")
-		taskRouterGroup.POST("", taskcaleventview.CreateTaskCalEvent)
-		taskRouterGroup.PUT(":id", taskcaleventview.UpdateTaskCalEvent)
-		taskRouterGroup.DELETE(":id", taskcaleventview.DeteleTaskCalEvent)
+		tasktitleoptionRouterGroup.POST("", tasktitleoptionview.CreateTaskTitleOption)
+		tasktitleoptionRouterGroup.PUT(":id", tasktitleoptionview.UpdateTaskTitleOption)
+		tasktitleoptionRouterGroup.DELETE(":id", tasktitleoptionview.DeleteTaskTitleOption)
 	}
 	return r
 }
