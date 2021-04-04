@@ -23,7 +23,7 @@ func (tcv TaskCalEvent) CreateTaskCalEvent(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, Taskcal)
+	c.JSON(http.StatusCreated, Taskcal)
 }
 
 func (tcv TaskCalEvent) UpdateTaskCalEvent(c *gin.Context) {
