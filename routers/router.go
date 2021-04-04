@@ -80,5 +80,15 @@ func Setup() *gin.Engine {
 		tasktitleoptionRouterGroup.PUT(":id", tasktitleoptionview.UpdateTaskTitleOption)
 		tasktitleoptionRouterGroup.DELETE(":id", tasktitleoptionview.DeleteTaskTitleOption)
 	}
+
+	var seriestaskoptionview views.NegiSeriesTaskOption
+	r.GET("v1/negicustomseriestaskoptions/", seriestaskoptionview.GetAllseriesTaskOption)
+	seriestaskoptionRouterGroup := r.Group("/v1/negicustomseriestaskoption/")
+	{
+		seriestaskoptionRouterGroup.GET("")
+		seriestaskoptionRouterGroup.POST("", seriestaskoptionview.CreateSeriesTaskOption)
+		seriestaskoptionRouterGroup.PUT(":id", seriestaskoptionview.UpdateseriesTaskOption)
+		seriestaskoptionRouterGroup.DELETE(":id", seriestaskoptionview.DeleteseriesTaskOption)
+	}
 	return r
 }
