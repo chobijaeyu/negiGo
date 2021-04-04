@@ -14,11 +14,12 @@ const (
 	put    = "修正"
 	delete = "削除"
 
-	calevdetail       = "タスク"
-	fielddetail       = "圃場"
-	imgdetail         = "画像"
-	membersdetail     = "メンバー"
-	titleoptiondetail = "タスクタイトル"
+	calevdetail            = "タスク"
+	fielddetail            = "圃場"
+	imgdetail              = "画像"
+	membersdetail          = "メンバー"
+	titleoptiondetail      = "タスクタイトル"
+	seriestaskoptiondetail = "標準タスク"
 )
 
 func OperatingLog() gin.HandlerFunc {
@@ -52,6 +53,7 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 	var imgre = regexp.MustCompile(`(?m)img`)
 	var membersre = regexp.MustCompile(`(?m)members`)
 	var titleoptionre = regexp.MustCompile(`(?m)negicustomtasktitleoption`)
+	var seriesoptionre = regexp.MustCompile(`(?m)negicustomseriestaskoption`)
 
 	switch {
 	case calevre.Match([]byte(c.Request.URL.Path)):
@@ -64,6 +66,8 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 		what = membersdetail
 	case titleoptionre.Match([]byte(c.Request.URL.Path)):
 		what = titleoptiondetail
+	case seriesoptionre.Match([]byte(c.Request.URL.Path)):
+		what = seriestaskoptiondetail
 	}
 
 	return
