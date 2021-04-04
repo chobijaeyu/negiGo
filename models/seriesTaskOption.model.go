@@ -7,7 +7,6 @@ import (
 type SeriesTaskSingleTask struct {
 	gorm.Model
 	Title              string `json:"title,omitempty"`
-	AllDay             bool   `json:"allDay,omitempty"`
 	Start              int    `json:"start,omitempty"`
 	End                int    `json:"end,omitempty"`
 	Priority           int    `json:"priority,omitempty"`
