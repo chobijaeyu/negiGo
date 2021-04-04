@@ -54,6 +54,7 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 	var membersre = regexp.MustCompile(`(?m)members`)
 	var titleoptionre = regexp.MustCompile(`(?m)negicustomtasktitleoption`)
 	var seriesoptionre = regexp.MustCompile(`(?m)negicustomseriestaskoption`)
+	var singletaskoptionre = regexp.MustCompile(`(?m)seriestasksingletask`)
 
 	switch {
 	case calevre.Match([]byte(c.Request.URL.Path)):
@@ -67,6 +68,8 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 	case titleoptionre.Match([]byte(c.Request.URL.Path)):
 		what = titleoptiondetail
 	case seriesoptionre.Match([]byte(c.Request.URL.Path)):
+		what = seriestaskoptiondetail
+	case singletaskoptionre.Match([]byte(c.Request.URL.Path)):
 		what = seriestaskoptiondetail
 	}
 

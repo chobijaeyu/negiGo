@@ -35,7 +35,7 @@ func (STO *SeriesTaskOption) CreateSeriesTaskOption() (err error) {
 
 func (STO *SeriesTaskOption) UpdateSeriesTaskOption() (err error) {
 
-	if err = db.Model(&STO).Updates(&STO).Error; err != nil {
+	if err = db.Model(&STO).Session(&gorm.Session{FullSaveAssociations: true}).Updates(&STO).Error; err != nil {
 		return
 	}
 
@@ -67,6 +67,13 @@ func (STO *SeriesTaskOption) GetAllSeriesTaskOptions() (cs []SeriesTaskOption, e
 func (STO *SeriesTaskOption) GetSeriesTaskOptionsByQuery(q, qv, v string) (cvs []SeriesTaskOption, err error) {
 
 	if err = db.Model(&STO).Where(`%v = %v`, q, qv).Find(&cvs).Error; err != nil {
+		return
+	}
+	return
+}
+
+func (stst *SeriesTaskSingleTask) DeteleSingleTask() (err error) {
+	if err = db.Model(&stst).Delete(&stst).Error; err != nil {
 		return
 	}
 	return

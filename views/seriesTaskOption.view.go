@@ -71,3 +71,22 @@ func (stov NegiSeriesTaskOption) GetAllseriesTaskOption(c *gin.Context) {
 
 	c.JSON(http.StatusOK, titleoptions)
 }
+
+func (stov NegiSeriesTaskOption) DeleteseriesSingleTaskOption(c *gin.Context) {
+	stst := models.SeriesTaskSingleTask{}
+
+	negiseriesTaskOptionid, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Detele task title opiton no id param : %v", err)
+		return
+	}
+
+	stst.ID = uint(negiseriesTaskOptionid)
+
+	if err := stst.DeteleSingleTask(); err != nil {
+		c.String(http.StatusInternalServerError, "Delete task title option db err : %v", err)
+		return
+	}
+
+	c.JSON(http.StatusNoContent, "")
+}

@@ -40,8 +40,6 @@ func Setup() *gin.Engine {
 
 	r.Use(middleware.FirebaseAuth())
 
-	r.Use(middleware.OperatingLog())
-
 	r.POST("v1/img/:name", views.AddGoodsImg)
 	r.DELETE("v1/img", views.DeleteGoodsImg)
 
@@ -83,6 +81,7 @@ func Setup() *gin.Engine {
 
 	var seriestaskoptionview views.NegiSeriesTaskOption
 	r.GET("v1/negicustomseriestaskoptions/", seriestaskoptionview.GetAllseriesTaskOption)
+	r.DELETE("v1/seriestasksingletask/:id", seriestaskoptionview.DeleteseriesSingleTaskOption)
 	seriestaskoptionRouterGroup := r.Group("/v1/negicustomseriestaskoption/")
 	{
 		seriestaskoptionRouterGroup.GET("")
@@ -90,5 +89,6 @@ func Setup() *gin.Engine {
 		seriestaskoptionRouterGroup.PUT(":id", seriestaskoptionview.UpdateseriesTaskOption)
 		seriestaskoptionRouterGroup.DELETE(":id", seriestaskoptionview.DeleteseriesTaskOption)
 	}
+	r.Use(middleware.OperatingLog())
 	return r
 }
