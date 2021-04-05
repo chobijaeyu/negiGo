@@ -40,8 +40,6 @@ func Setup() *gin.Engine {
 
 	r.Use(middleware.FirebaseAuth())
 
-	r.Use(middleware.OperatingLog())
-
 	r.POST("v1/img/:name", views.AddGoodsImg)
 	r.DELETE("v1/img", views.DeleteGoodsImg)
 
@@ -71,5 +69,26 @@ func Setup() *gin.Engine {
 		taskRouterGroup.DELETE(":eventid", taskcaleventview.DeteleTaskCalEvent)
 	}
 
+	var tasktitleoptionview views.NegiTaskTitleOption
+	r.GET("v1/negicustomtasktitleoptions/", tasktitleoptionview.GetAllTaskTitleOption)
+	tasktitleoptionRouterGroup := r.Group("/v1/negicustomtasktitleoption/")
+	{
+		tasktitleoptionRouterGroup.GET("")
+		tasktitleoptionRouterGroup.POST("", tasktitleoptionview.CreateTaskTitleOption)
+		tasktitleoptionRouterGroup.PUT(":id", tasktitleoptionview.UpdateTaskTitleOption)
+		tasktitleoptionRouterGroup.DELETE(":id", tasktitleoptionview.DeleteTaskTitleOption)
+	}
+
+	var seriestaskoptionview views.NegiSeriesTaskOption
+	r.GET("v1/negicustomseriestaskoptions/", seriestaskoptionview.GetAllseriesTaskOption)
+	r.DELETE("v1/seriestasksingletask/:id", seriestaskoptionview.DeleteseriesSingleTaskOption)
+	seriestaskoptionRouterGroup := r.Group("/v1/negicustomseriestaskoption/")
+	{
+		seriestaskoptionRouterGroup.GET("")
+		seriestaskoptionRouterGroup.POST("", seriestaskoptionview.CreateSeriesTaskOption)
+		seriestaskoptionRouterGroup.PUT(":id", seriestaskoptionview.UpdateseriesTaskOption)
+		seriestaskoptionRouterGroup.DELETE(":id", seriestaskoptionview.DeleteseriesTaskOption)
+	}
+	r.Use(middleware.OperatingLog())
 	return r
 }

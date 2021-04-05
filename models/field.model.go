@@ -49,6 +49,7 @@ func (F *NegiField) GetOneNegiField() (err error) {
 }
 
 func (F *NegiField) GetAllNegiField() (fs []NegiField, err error) {
+
 	if err = db.Find(&fs).Error; err != nil {
 		return
 	}
