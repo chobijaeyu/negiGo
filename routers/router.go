@@ -48,7 +48,7 @@ func Setup() *gin.Engine {
 	// r.GET("/v1/members", authViews.ListAllUsers)
 	// r.POST("/v1/members/:uid", authViews.UpdateUser)
 	r.GET("/v1/members", authViews.ListAllUsers)
-	r.POST("/v1/members/:uid", middleware.AdminAuth(), authViews.UpdateUser)
+	r.PUT("/v1/members/:uid", middleware.AdminAuth(), authViews.UpdateUser)
 
 	var fieldview views.NegiField
 	r.GET("v1/negifields/", fieldview.GetAllNeigFields)
