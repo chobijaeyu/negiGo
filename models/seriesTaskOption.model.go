@@ -21,8 +21,8 @@ type SeriesTaskOption struct {
 
 func init() {
 	db.AutoMigrate(
-		SeriesTaskSingleTask{},
 		SeriesTaskOption{},
+		SeriesTaskSingleTask{},
 	)
 }
 
