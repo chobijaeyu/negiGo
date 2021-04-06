@@ -39,15 +39,6 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 	_who, _ := c.Get("username")
 	who = fmt.Sprintf("%v", _who)
 
-	switch c.Request.Method {
-	case "POST":
-		did = post
-	case "PUT":
-		did = put
-	case "DELETE":
-		did = delete
-	}
-
 	var calevre = regexp.MustCompile(`(?m)negicalevent`)
 	var fieldre = regexp.MustCompile(`(?m)negifield`)
 	var imgre = regexp.MustCompile(`(?m)img`)
@@ -71,7 +62,18 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 		what = seriestaskoptiondetail
 	case singletaskoptionre.Match([]byte(c.Request.URL.Path)):
 		what = seriestaskoptiondetail
+	default:
+		return
 	}
 
+	switch c.Request.Method {
+	case "POST":
+		did = post
+	case "PUT":
+		did = put
+	case "DELETE":
+		did = delete
+	}
+	fmt.Println("loggger")
 	return
 }
