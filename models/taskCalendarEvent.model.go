@@ -70,7 +70,7 @@ func (TC *TaskCalEvent) GetAllTaskCalEvents(confirmed string) (cs []TaskCalEvent
 	}
 	lastMonth := time.Now().AddDate(0, -2, 0)
 	nextyear := time.Now().AddDate(1, 0, 0)
-	if err = db.Model(&TC).Where("confirmed = ?", _confirmed).Where("created_at BETWEEN ? AND ?", lastMonth, nextyear).Find(&cs).Error; err != nil {
+	if err = db.Model(&TC).Where("confirmed = ?", _confirmed).Where("created_at BETWEEN ? AND ?", lastMonth, nextyear).Order("created_at desc").Find(&cs).Error; err != nil {
 		return
 	}
 	return
