@@ -26,6 +26,7 @@ func OperatingLog() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ol := models.OperatingLog{}
 		ol.Who, ol.Did, ol.What = parseOperate(c)
+		fmt.Println(ol)
 		if ol.Did != "" {
 			ol.When = time.Now().Format(time.RFC3339)
 			ol.LoggingOperating()
@@ -37,6 +38,7 @@ func OperatingLog() gin.HandlerFunc {
 func parseOperate(c *gin.Context) (who, did, what string) {
 	//logging who did what
 	_who, _ := c.Get("username")
+	fmt.Println(_who)
 	who = fmt.Sprintf("%v", _who)
 
 	var calevre = regexp.MustCompile(`(?m)negicalevent`)
@@ -74,6 +76,5 @@ func parseOperate(c *gin.Context) (who, did, what string) {
 	case "DELETE":
 		did = delete
 	}
-	fmt.Println("loggger")
 	return
 }
