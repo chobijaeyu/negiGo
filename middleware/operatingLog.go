@@ -38,6 +38,7 @@ func OperatingLog() gin.HandlerFunc {
 func parseOperate(c *gin.Context) (who, did, what string) {
 	//logging who did what
 	_who, _ := c.Get("username")
+	fmt.Println(_who)
 	who = fmt.Sprintf("%v", _who)
 
 	var calevre = regexp.MustCompile(`(?m)negicalevent`)
